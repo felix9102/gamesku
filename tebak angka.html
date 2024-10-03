@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="Indonesia"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Tebak Angka</title> 
+  <link rel="stylesheet" href="styles.css"> 
+ <style type="text/css" id="dcoder_stylesheet">body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 20px;
+}
+
+.game-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+input[type="number"] {
+    padding: 10px;
+    font-size: 1em;
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#resultMessage {
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+#previousGuesses {
+    font-size: 1em;
+    color: #555;
+    margin-top: 10px;
+}</style></head> 
+ <body> 
+  <div class="game-container"> 
+   <h1>Tebak angkanya!</h1> 
+   <p>aku telah kemilih angka diantara 1 dan 100. bisakah kamu menebaknya?</p> 
+   <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100"> <button id="submitGuess">Masukan tebakan</button> 
+   <p id="resultMessage"></p> 
+   <p id="tebakan sebelumnya"></p> <button id="restartGame" style="display:none;">Restart Game</button> 
+  </div> 
+  <script src="script.js"></script> 
+ 
+<script type="text/javascript" id="dcoder_script">let randomNumber = Math.floor(Math.random() * 100) + 1; // Generate random number between 1 and 100
+let guesses = [];
+let maxAttempts = 10;
+
+document.getElementById('submitGuess').addEventListener('click', function() {
+    let guess = Number(document.getElementById('guessInput').value);
+
+    if (guess >= 1 && guess <= 100) {
+        guesses.push(guess);
+        let resultMessage = document.getElementById('resultMessage');
+        let previousGuesses = document.getElementById('tebakan sebelumnya');
+
+        if (guess === randomNumber) {
+            resultMessage.textContent = "selamat kamu telah menjawabnya dengan benar";
+            document.getElementById('submitGuess').disabled = true;
+            document.getElementById('restartGame').style.display = 'block';
+        } else if (guesses.length === maxAttempts) {
+            resultMessage.textContent = `Maaf! lu udah mencapai jumlah buat nyoba maksimal. Jumlahnya adalah ${randomNumber}.`;
+            document.getElementById('submitGuess').disabled = true;
+            document.getElementById('restartGame').style.display = 'block';
+        } else {
+            if (guess < randomNumber) {
+                resultMessage.textContent = "terlalu rendah! coba lagi.";
+            } else if (guess > randomNumber) {
+                resultMessage.textContent = "terlalu tinggi! coba lagi.";
+            }
+            previousGuesses.textContent = `tebakan sebelumnya: ${guesses.join(', ')}`;
+        }
+    } else {
+        alert('masukin Nomor 1 sampai 100, anjir. ngak boleh 0 dan melewati 100');
+    }
+
+    document.getElementById('guessInput').value = ''; // Clear input field
+});
+
+document.getElementById('restartGame').addEventListener('click', function() {
+    randomNumber = Math.floor(Math.random() * 100) + 1;
+    guesses = [];
+    document.getElementById('resultMessage').textContent = '';
+    document.getElementById('tebakan sebelumnya').textContent = '';
+    document.getElementById('submitGuess').disabled = false;
+    document.getElementById('restartGame').style.display = 'none';
+});</script></body></html>
